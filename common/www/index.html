@@ -20,26 +20,26 @@
       var mobile_system = '';
     }
   </script>
-
+  <!-- <script src="http://jsconsole.com/remote.js?59D74F33-90B4-429E-B0E4-5847B133FF26"></script> -->
+  <!--  <script src="http://debug.phonegap.com/target/target-script-min.js#MOPMOP"></script> http://debug.phonegap.com/client/#MOPMOP -->
   <script src="js/lib/jquery.js"></script>
   <!-- your scripts here -->
   <script src="js/app/fileutils.js"></script>
   <script src="js/app/app.js"></script>
   <script src="js/app/bootstrap.js"></script>
   <script src="js/lib/jquery.mobile.js"></script>
-  </head>
-  <body>
-
-
+</head>
+<body>
 
 <div data-role="page">
-  <div data-role="header" data-theme="a">
+<!--
+  <div data-role="header" data-theme="a" data-position="fixed">
     <h1>Rue89</h1>
   </div>
-  <!-- /header -->
+-->
   <div data-role="content">
-    <div class="content-primary">
-      <ul id="list" data-theme="a" data-role="listview" data-filter="true">
+    <div class="content-primary" id="content">
+      <ul id="list" data-theme="a" data-role="listview">
       <li id="load">Loading Data...</li>
       </ul>
     </div>
@@ -47,8 +47,6 @@
   </div>
   <!-- /content -->
   <div data-role="footer" data-theme="a" data-position="fixed" data-tap-toggle="false">
-
-    <!-- /navbar -->
   </div>
   <!-- /footer -->
 </div>

@@ -2,7 +2,7 @@ var URL = "http://www.rue89.com/files/export/iphone3/xml/list.xml";
 
 function startApp() {
     //console.log("cordova="+ JSON.stringify(cordova));
-    cordova.logger.logLevel("DEBUG");
+    //cordova.logger.logLevel("DEBUG");
     initPersistent(1024*1024, function () {
         loadData();
         fetchData();
@@ -11,12 +11,10 @@ function startApp() {
 
 function createEntry(title, imageurl) {
     var res = '<li ';
-    console.log("imageurl=" + imageurl + " -title=" + title);
     if (imageurl) {
         res += 'style="background-image: url(\'http://www.rue89.com/sites/news/files/styles/article_widescreen/public/'
             + imageurl +'\'); background-repeat: no-repeat; max-width:100%">';
     } else {
-        return "";
         res += '>';
     }
     res += '<a href=""><h1 style="width:90%; white-space:normal; font-size:120%; -webkit-text-stroke: 1px black; ">'
@@ -29,8 +27,8 @@ function parseXMLandShow(xml) {
     $("#list").html("");
     $(xml).find("item").each(function () {
          var title = $(this).find("title").text();
+         console.log("new title=" + title);
          var imageurl = $(this).find("image").text();
-
          var tmp = createEntry(title, imageurl);
          $("#list").append(tmp);
     });
@@ -43,17 +41,23 @@ function fileSave(data) {
         fileEntry.createWriter(function(fileWriter) {
             fileWriter.onwriteend = function(e) {
                 console.log('Write completed.');
+                loadData();
             };
             fileWriter.onerror = function(e) {
-                console.log('Write failed: ' + e.toString());
+                console.log('Write failed: ' + JSON.stringify(e));
+                writeFileErrorHandler(e);
             };
-
             // Create a new Blob and write it to log.txt.
             var str = (new XMLSerializer()).serializeToString(data);
-            var blob = new Blob([str], {type: 'text/plain'});
-            fileWriter.write(blob);
-        }, errorHandler);
+            //var blob = new Blob([str], {type: 'text/plain'});
+            // cordova can only write text
+            fileWriter.write(str);
+        }, function (e) { console.log("error writing file:" + e);  writeFileErrorHandler(e); });
     });
+}
+
+function downloadAndCache(url) {
+
 }
 
 function loadData() {
@@ -68,7 +72,7 @@ function loadData() {
              parseXMLandShow(xmlDoc);
          };
          reader.readAsText(file);
-      }, function (e) { console.log("error:" + e);});
+      }, function (e) { console.log("error reading file:" + e);  writeFileErrorHandler(e); });
     });
 }
 
@@ -82,7 +86,9 @@ function fetchData() {
            });
 
     function getDataError(jqXHR, textStatus, errorThrown) {
-        $('#load').fadeOut("slaw", function () {
+        console.log("getDataError: status=" + textStatus + " xhr=" + JSON.stringify(jqXHR)
+                    + " - "  + JSON.stringify(errorThrown));
+        $('#load').fadeOut("slow", function () {
                                $('#load').html('<li>Error Loading Page</li>').fadeIn();
                            });
     }

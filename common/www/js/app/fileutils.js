@@ -1,21 +1,15 @@
 var g_fs = null;
 var g_success = null;
-function initPersistent(size, success) { // size: 5*1024*1024 /*5MB*/
+
+var initPersistent = function(size, success) { // size: 5*1024*1024 /*5MB*/
     g_success = success;
     window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-    window.webkitStorageInfo.requestQuota(1, size,
-           function(grantedBytes) { // success
-               console.log('Granted Bytes: ' + grantedBytes);
-               window.requestFileSystem(1, grantedBytes, onInitFs, errorHandler);
-           },
-           function(e) { // error
-               console.log('Error requesting quota: ', e);
-           });
+    window.requestFileSystem(1, size, onInitFs, writeFileErrorHandler);
 }
 
 function initTemporary(size) {
     window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-    window.requestFileSystem(0, size, onInitFs, errorHandler);
+    window.requestFileSystem(0, size, onInitFs, writeFileErrorHandler);
 }
 
 function onInitFs(fs) {
@@ -25,14 +19,15 @@ function onInitFs(fs) {
 }
 
 function createFile(filename, success) {
-    g_fs.root.getFile(filename, {create: true}, success, function (e) { console.log("error:" + e); });
+    g_fs.root.getFile(filename, {create: true}, success, function (e) { console.log("createFile error:" + e);
+                                                                        writeFileErrorHandler(e);});
 }
 
 function readFile(filename, success) {
-    g_fs.root.getFile(filename, {}, success, function (e) { console.log("error:" + e); });
+    g_fs.root.getFile(filename, {}, success, function (e) { console.log("getFile error:" + e); writeFileErrorHandler(e);});
 }
 
-function errorHandler(e) {
+function writeFileErrorHandler(e) {
     var msg = '';
 
     switch (e.code) {
@@ -57,5 +52,4 @@ function errorHandler(e) {
     };
 
     console.log('Error: ' + msg + " - " + e);
-    alert('Error: ' + msg + " - " + e);
 }
