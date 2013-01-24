@@ -1,14 +1,14 @@
 var g_fs = null;
 var g_success = null;
 
-var initPersistent = function(size, success) { // size: 5*1024*1024 /*5MB*/
+var initPersistent = function (size, success) { // size: 5*1024*1024 /*5MB*/
     g_success = success;
-    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
     window.requestFileSystem(1, size, onInitFs, writeFileErrorHandler);
 }
 
 function initTemporary(size) {
-    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
     window.requestFileSystem(0, size, onInitFs, writeFileErrorHandler);
 }
 
@@ -19,17 +19,22 @@ function onInitFs(fs) {
 }
 
 function createFile(filename, success) {
-    g_fs.root.getFile(filename, {create: true, exclusive: false}, success, function (e) { console.log("createFile error:" + e);
-                                                                        writeFileErrorHandler(e);});
+    g_fs.root.getFile(filename, {create:true, exclusive:false}, success, function (e) {
+        console.log("createFile error:" + e);
+        writeFileErrorHandler(e);
+    });
 }
 
 function readFile(filename, success) {
-    g_fs.root.getFile(filename, {create: false}, success, function (e) { console.log("getFile error:" + e); writeFileErrorHandler(e);});
+    g_fs.root.getFile(filename, {create:false}, success, function (e) {
+        console.log("getFile error:" + e);
+        writeFileErrorHandler(e);
+    });
 }
 
 function writeToFile(filename, text, onwriteend, onerror) {
     createFile(filename, function (fileEntry) {
-        fileEntry.createWriter(function(fileWriter) {
+        fileEntry.createWriter(function (fileWriter) {
             fileWriter.onwriteend = onwriteend;
             fileWriter.onerror = onerror;
             // cordova can only write text
@@ -38,57 +43,60 @@ function writeToFile(filename, text, onwriteend, onerror) {
             } else {
                 fileWriter.write(text);
             }
-        }, function (e) { console.log("error writing file:" + e);
-                          writeFileErrorHandler(e); });
+        }, function (e) {
+            console.log("error writing file:" + e);
+            writeFileErrorHandler(e);
+        });
     });
 }
 
 function readFromFile(filename, onloadend, onerror) {
-    readFile(filename, function(fileEntry) {
-        fileEntry.file(function(file) {
+    readFile(filename, function (fileEntry) {
+        fileEntry.file(function (file) {
             var reader = new FileReader();
             reader.onloadend = onloadend;
             reader.readAsText(file);
-        }, function (e) { console.log("error reading file:" + e);
-                          writeFileErrorHandler(e); });
+        }, function (e) {
+            console.log("error reading file:" + e);
+            writeFileErrorHandler(e);
+        });
     });
 }
 
-function fileExists(filename) {
-    var reader = new FileReader();
-    reader.onloadend = function(evt) {
-        if (evt.target.result == null) {
-            return true;
-        } else {
-            return false;
-        }
+function fileExists(filename, result) {
+    var notFound = function () {
+        result(false);
     };
-    reader.readAsDataURL(filename);
+    var reader = new FileReader();
+    g_fs.root.getFile(filename, {}, function (fileEntry) {
+        result(true);
+    }, notFound);
 }
 
 function writeFileErrorHandler(e) {
     var msg = '';
 
     switch (e.code) {
-    case FileError.QUOTA_EXCEEDED_ERR:
-        msg = 'QUOTA_EXCEEDED_ERR';
-        break;
-    case FileError.NOT_FOUND_ERR:
-        msg = 'NOT_FOUND_ERR';
-        break;
-    case FileError.SECURITY_ERR:
-        msg = 'SECURITY_ERR';
-        break;
-    case FileError.INVALID_MODIFICATION_ERR:
-        msg = 'INVALID_MODIFICATION_ERR';
-        break;
-    case FileError.INVALID_STATE_ERR:
-        msg = 'INVALID_STATE_ERR';
-        break;
-    default:
-        msg = 'Unknown Error';
-        break;
-    };
+        case FileError.QUOTA_EXCEEDED_ERR:
+            msg = 'QUOTA_EXCEEDED_ERR';
+            break;
+        case FileError.NOT_FOUND_ERR:
+            msg = 'NOT_FOUND_ERR';
+            break;
+        case FileError.SECURITY_ERR:
+            msg = 'SECURITY_ERR';
+            break;
+        case FileError.INVALID_MODIFICATION_ERR:
+            msg = 'INVALID_MODIFICATION_ERR';
+            break;
+        case FileError.INVALID_STATE_ERR:
+            msg = 'INVALID_STATE_ERR';
+            break;
+        default:
+            msg = 'Unknown Error';
+            break;
+    }
+    ;
 
     console.log('Error: ' + msg + " - " + e);
 }
