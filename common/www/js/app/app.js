@@ -18,7 +18,7 @@ function createEntry(title, imageurl, nid) {
     res += '>';
 //    }
     var img = '<img src="http://www.rue89.com/sites/news/files/styles/article_widescreen/public/' + imageurl + '" /></div>';
-    res += '<a href="#article" data-transition="slide" class="articlelink" id="' + nid + '">' + img + '<h2 style="font-size: 80%; white-space:normal; ">' + title + '</h2></a></li>';
+    res += '<a href="#article" class="articlelink" id="' + nid + '">' + img + '<h2 style="font-size: 80%; white-space:normal; ">' + title + '</h2></a></li>';
     return res;
 }
 
