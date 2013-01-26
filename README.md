@@ -23,6 +23,7 @@ Based on html5 and jquery-mobile and wrapped with cordova ios and cordova androi
 
 ## Install
 ### iOS
+
 Run XCode and open project ios/rue89.xcodeproj, then build and run for device.
 
 ### Android
