@@ -19,7 +19,7 @@ Based on html5 and jquery-mobile and wrapped with cordova ios and cordova androi
 
 ### Android
 
-    $ android/cordova/run # run in Android emulator
+    $ android/cordova/run # run in Android emulator (you must create an AVD first)
 
 ## Install
 ### iOS
