@@ -10,15 +10,15 @@ out=..
 
 # iOS
 # icons
-convert $source -resize 72x72 $out/ios/RedditAww/Resources/icons/icon-72.png
-convert $source -resize 144x144 $out/ios/RedditAww/Resources/icons/icon-72@2x.png
-convert $source -resize 57x57 $out/ios/RedditAww/Resources/icons/icon.png
-convert $source -resize 114x114 $out/ios/RedditAww/Resources/icons/icon@2x.png
+projectName=$(basename ../ios/*.xcodeproj|sed "s/.xcodeproj//")
+convert $source -resize 72x72 $out/ios/$projectName/Resources/icons/icon-72.png
+convert $source -resize 144x144 $out/ios/$projectName/Resources/icons/icon-72@2x.png
+convert $source -resize 57x57 $out/ios/$projectName/Resources/icons/icon.png
+convert $source -resize 114x114 $out/ios/$projectName/Resources/icons/icon@2x.png
 
 # iTunesArtwork
 # convert $source -resize 512x512 $out/iTunesArtwork.png
 # convert $source -resize 1024x1024 $out/iTunesArtwork@2x.png
-
 
 # Android
 convert $source -resize 96x96 $out/android/res/drawable/icon.png
