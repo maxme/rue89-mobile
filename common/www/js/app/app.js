@@ -4,10 +4,17 @@ var g_article_loading = false;
 
 function startApp() {
     initPersistent(1024 * 1024, function () {
-        loadData();
+        realStart();
+    });
+}
+
+function realStart() {
+    loadData();
+    fetchData();
+    $("#refreshbutton").on("tap", function () {
         fetchData();
     });
-};
+}
 
 function createEntry(title, imageurl, nid) {
     var res = '<li ';
