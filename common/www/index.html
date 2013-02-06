@@ -35,16 +35,28 @@
 <body>
 
 <div data-role="page" id="home">
-    <!--
-      <div data-role="header" data-theme="a" data-position="fixed">
+    <div data-role="header" data-theme="a" data-position="fixed">
         <h1>Rue89</h1>
-      </div>
-    -->
+        <a id="refreshbutton" data-icon="refresh" data-transition="slide">Refresh</a>
+        <a id="infobutton" href="#panelinfos" data-icon="info">Infos</a>
+    </div>
+
+    <div data-role="panel" data-position-fixed="true" id="panelinfos" data-position="right" data-theme="a">
+        <a href="#title" data-rel="close" data-role="button" data-icon="delete">Close</a>
+
+        <p>
+            App written by: <a href="#" class="extlink" rel="https://github.com/maxme">Maxime Biais</a>. Thanks
+            to jQuery, jQueryMobile and Cordova. Open Source, MIT License - checkout the project page on
+            <a href="#" class="extlink" rel="https://github.com/maxme/rue89-mobile/">GitHub</a>.
+        </p>
+
+        <p>
+            Articles and images are fetched from <a href="#" class="extlink" rel="http://www.rue89.com">Rue89</a>
+            website.
+        </p>
+    </div>
+
     <div data-role="content">
-        <div data-role="header" data-theme="a" data-position="fixed">
-            <h1>Rue89</h1>
-            <a id="refreshbutton" data-icon="refresh" data-transition="slide">Refresh</a>
-        </div>
         <div class="content-primary" id="content">
             <ul id="list" data-theme="a" data-role="listview">
                 <li id="load">Loading Data...</li>
@@ -61,6 +73,7 @@
 <div data-role="page" id="article">
     <div data-role="header" data-theme="a" data-position="fixed">
         <a data-icon="arrow-l" data-transition="slide" data-rel="back">Back</a>
+
         <h1>Article</h1>
     </div>
     <div data-role="content">
