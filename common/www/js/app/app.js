@@ -14,12 +14,6 @@ function realStart() {
     $("#refreshbutton").on("tap", function () {
         fetchData();
     });
-    $("#list").swiperight(function() {
-       fetchData();
-    });
-    $("#list").swipeleft(function() {
-        $("#panelinfos").panel("open");
-    });
 }
 
 function createEntry(title, imageurl, nid) {
